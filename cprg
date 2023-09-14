@@ -1,0 +1,2 @@
+#! /bin/sh
+cp tst ~/Downloads/buildroot-2023.08/overlay/bin/tst

@@ -1,0 +1,3 @@
+#!/bin/sh
+~/Downloads/buildroot-2023.08/output/host/bin/aarch64-linux-g++ -o tst main.cpp -lcurl
+
