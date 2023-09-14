@@ -1,0 +1,63 @@
+//
+https://api.open-meteo.com/v1/forecast?latitude=43.5283&longitude=5.4497&hourly=temperature_2m,windspeed_10m,winddirection_10m
+
+//
+
+
+
+//
+Current weather data - OpenWeatherMap:
+
+api.openweathermap.org/data/2.5/weather?lat=43.5283&lon=5.44973&appid=fb7ea3ac85bb67a9bdb0b4b9a51f1c72&units=metric
+icone à télécharger à :  https://openweathermap.org/img/w/nom_icone.png
+
+Réponse:
+{
+    "coord": {
+        "lon": 5.4497,
+        "lat": 43.5283
+    },
+    "weather": [
+        {
+            "id": 800,
+            "main": "Clear",
+            "description": "clear sky",
+            "icon": "01d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 292.67,
+        "feels_like": 292.27,
+        "temp_min": 291.84,
+        "temp_max": 293.82,
+        "pressure": 1017,
+        "humidity": 61,
+        "sea_level": 1017,
+        "grnd_level": 993
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 1.73,
+        "deg": 30,
+        "gust": 2.39
+    },
+    "clouds": {
+        "all": 0
+    },
+    "dt": 1694675928,
+    "sys": {
+        "type": 1,
+        "id": 6512,
+        "country": "FR",
+        "sunrise": 1694668560,
+        "sunset": 1694713928
+    },
+    "timezone": 7200,
+    "id": 3038354,
+    "name": "Aix-en-Provence",
+    "cod": 200
+}
+//
+
+
