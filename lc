@@ -1,3 +1,4 @@
 #!/bin/sh
-~/Downloads/buildroot-2023.08/output/host/bin/aarch64-linux-g++ -o ginfos ginfos.cpp -lcurl -I ljsoncpp
-
+REP_LIB=~/Downloads/buildroot-2023.08
+REP_COMP_CARTE=~/Downloads/buildroot-2023.08/output/host/bin
+$REP_COMP_CARTE/aarch64-linux-g++ -o ginfos ginfos.cpp -lcurl -lgd -lstdc++fs

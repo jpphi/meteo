@@ -1,13 +1,9 @@
 #include <iostream>
 #include <curl/curl.h>
-#include <jsoncpp/json/json.h>
+#include <nlohmann/json.hpp>
 
 //#include <string.h>
 # include <fstream>
-
-
-
-// api.openweathermap.org/data/2.5/weather?lat=43.5283&lon=5.44973&appid=fb7ea3ac85bb67a9bdb0b4b9a51f1c72&units=metric
 
 /*
 /home/jpphi/Downloads/buildroot-2023.08/output/build/libcurl-8.2.1/include/curl/curl.h
@@ -15,6 +11,7 @@
 */
 
 using namespace std;
+using json= nlohmann::json_abi_v3_11_2::json;
 
 int main()
 {
@@ -22,7 +19,6 @@ int main()
     char url[]= "api.open-meteo.com/v1/forecast?latitude=43.5283&longitude=5.4497&hourly=temperature_2m,windspeed_10m,winddirection_10m";
     char nfichier[]= "rmeteo.json";
     FILE *desc;
-    //ofstream fichier(nfichier);
 
     desc= fopen(nfichier,"w"); // On écrase à chaque fois le précédent relevé
 
@@ -52,18 +48,21 @@ int main()
 
     }
 
+    fclose(desc);
 
     curl_easy_cleanup(curl);
 
     // Ouverture du fichier json
     ifstream flux(nfichier);
 
-    //Json::Reader lecteur;
-    //Json::Value valeur;
+    json j;
+    flux >> j;
 
-    //lecteur.parse(flux,valeur);
+    cout << j;
 
-    cout << valeur["latitude"];
+
+
+    //cout << valeur["latitude"];
 
 
     return 0;
@@ -77,6 +76,15 @@ find_package(jsoncpp REQUIRED)
 if (jsoncpp_FOUND)
     include_directories(${jsoncpp_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} ${jsoncpp_LIBRARIES})
+endif()
+
+
+
+find_package(JSON REQUIRED)
+
+if (JSON_FOUND)
+    include_directories(${QJSON_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} ${QJSON_LIBRARIES})
 endif()
 
 

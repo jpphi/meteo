@@ -17,9 +17,11 @@ if (CURL_FOUND)
     target_link_libraries(${PROJECT_NAME} ${CURL_LIBRARIES})
 endif()
 
-find_package(JSON REQUIRED)
 
-if (JSON_FOUND)
-    include_directories(${QJSON_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${QJSON_LIBRARIES})
+find_package(jsoncpp REQUIRED)
+
+if (jsoncpp_FOUND)
+    include_directories(${jsoncpp_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} ${jsoncpp_LIBRARIES})
 endif()
+
