@@ -1,4 +1,3 @@
-https://www.youtube.com/watch?v=QwCT7Ga4BG8
 //
 https://api.open-meteo.com/v1/forecast?latitude=43.5283&longitude=5.4497&hourly=temperature_2m,windspeed_10m,winddirection_10m
 
