@@ -1,3 +1,8 @@
+/// \brief Projet AJC - Linux embarqué
+/// \author Jean-Pierre Maffre
+/// \date 20 Septembre 2023
+/// \bug Ne se compile pas sur QT creator (problème d'intégration de la librairie gd)
+
 #include <iostream>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
@@ -7,40 +12,39 @@
 # include <fstream>
 #include<numeric>
 
-/*
-/home/jpphi/Downloads/buildroot-2023.08/output/build/libcurl-8.2.1/include/curl/curl.h
-/home/jpphi/Downloads/buildroot-2023.08/output/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/curl/curl.h
-*/
 
 using namespace std;
 using json= nlohmann::json_abi_v3_11_2::json;
 
 double maxTab(vector<double>);
 
+double minTab(vector<double>);
+
 int main()
 {
-    // curl
-    //char url[]= "api.openweathermap.org/data/2.5/weather?lat=43.5283&lon=5.44973&appid=fb7ea3ac85bb67a9bdb0b4b9a51f1c72&units=metric";
+    /// \brief url de l'api
     char url[]= "api.open-meteo.com/v1/forecast?latitude=43.5283&longitude=5.4497&hourly=temperature_2m,windspeed_10m,winddirection_10m";
 
-    // json
-    char nfichier[]= "rmeteo.json";
-    FILE *desc;
+    /// \brief Paramètre de l'image (hauteur, largeur et couleur de fond
+    const unsigned int hauteur= 800, largeur= 800;
+    const long unsigned int couleur_fond= 0x00D0EAFF;
+    const long unsigned int couleur_trace= 0x000000FF;
 
-    // gd
-    long unsigned int COULEUR_FOND= 0x00FFFFFF;
     gdImagePtr im;
 
+    /// Fichier json qui sera généré
+    char njson[]= "rmeteo.json";
 
-    desc= fopen(nfichier,"w"); // On écrase à chaque fois le précédent relevé
+    FILE *desc;
 
+    desc= fopen(njson,"w"); // On écrase à chaque fois le précédent relevé
+
+    /// \brief Récupération des données
     CURL *curl= curl_easy_init();
     CURLcode ccode;
-    //struct curl_slist *header= NULL;
 
     if(curl)
     {
-        //desc=
         cout << "curl !NULL" << endl;
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
         curl_easy_setopt(curl, CURLOPT_URL,url);
@@ -48,8 +52,6 @@ int main()
         //curl_easy_setopt(curl, CURLOPT_DEFAULT_PROTOCOL, "https");
 
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, desc);
-        //header= curl_slist_append(header, "test");
-        //cout << header->data;
 
         ccode= curl_easy_perform(curl);
 
@@ -64,40 +66,45 @@ int main()
 
     curl_easy_cleanup(curl);
 
-    // Ouverture du fichier json
-    ifstream flux(nfichier);
+    /// \brief Ouverture du fichier json (utilisation de ifstream plutôt que fopen)
+    ifstream flux(njson);
 
     json j;
     flux >>j;
 
-    cout << j["hourly"]["temperature_2m"] ;
-    //j.value("hourly","temperature_2m");
+    cout << j["hourly"]["temperature_2m"] << endl;
 
     vector<double> temperature2m(j["hourly"]["temperature_2m"]);
 
-    cout << "Taille: " << temperature2m.size();
+    cout << "Taille: " << temperature2m.size() << endl;
 
     double tempmax= maxTab(temperature2m);
+    double tempmin= minTab(temperature2m);
 
-    cout << tempmax;
-
+    cout << "T° max: " << tempmax << "T° min: " << tempmin << endl;
 
     flux.close();
 
-    //cout << valeur["latitude"];
-    int largeur= 800, hauteur= 800;
+    /// \brief Création d'un fichier png
     im = gdImageCreateTrueColor(largeur, hauteur);
-        gdImageFilledRectangle(im, 0, 0, largeur-1, hauteur-1, COULEUR_FOND);
+
+    gdImageFilledRectangle(im, 0, 0, largeur-1, hauteur-1, couleur_fond);
 
 
+    double margel= (double)largeur / 20, margeh= (double)hauteur/20;
+    unsigned int taille= temperature2m.size();
+    double pasl= (largeur- 2 * margel)/taille;
+    double a= (2*margeh - hauteur)/(tempmax-tempmin);
+    double b= margeh - a * tempmax;
 
-
-    for(int i=0; i<temperature2m.size()-1; i++)
+    for(int i=0; i<taille-1; i++)
     {
-        double x0=i,y0= temperature2m[i],x1=i+1,y1= temperature2m[i+1];
+        double x0= margel+i*pasl, x1= margel + (i+1) * pasl;
+        double y0= a * temperature2m[i] + b;
+        double y1= a * temperature2m[i+1] + b;
 
         //gdImageSetPixel(im,i,hauteur- temperature2m[i],0);
-        gdImageLine(im,x0,hauteur - y0,x1,hauteur - y1,0);
+        gdImageLine(im,x0, y0,x1, y1, couleur_trace);
         //gdImageFilledRectangle(im, x0, y0, x1, y0 - pourcentage[i], COULEURS[i]);
 
         //printf("\nx0, y0= %d, %d - x1, y1 %d,%d - pourcentage[%d]= %d larg_h= %d espace== %d\n", x0,y0,x1,y0 - pourcentage[i],i, pourcentage[i], larg_h, espace);
@@ -122,16 +129,32 @@ int main()
 }
 
 
-
+/// \brief Retourne le maximum d'un tableau vector
+/// \param vt Tableau (vector) de double
+/// \return Le maximum du tableau
 double maxTab(vector<double> vt)
 {
-    double max= - numeric_limits<double>::max();
+    double max= -numeric_limits<double>::max();
 
     for(double v: vt)
     {
         if(v > max)max= v;
     }
     return max;
+}
+
+/// \brief Retourne le minimum d'un tableau vector
+/// \param vt Tableau (vector) de double
+/// \return Le minimum du tableau
+double minTab(vector<double> vt)
+{
+    double m= numeric_limits<double>::max();
+
+    for(double v: vt)
+    {
+        if(v < m)m= v;
+    }
+    return m;
 }
 
 
