@@ -4,13 +4,18 @@
 /// \bug Ne se compile pas sur QT creator (problème d'intégration de la librairie gd)
 
 #include <iostream>
-#include <curl/curl.h>
-#include <nlohmann/json.hpp>
-#include <gd.h>
-#include <vector>
-//#include <string.h>
 # include <fstream>
+
+#include <vector>
+#include <string>
 #include<numeric>
+
+#include <curl/curl.h>
+
+#include <nlohmann/json.hpp>
+
+#include <gd.h>
+#include <gdfontmb.h>
 
 
 using namespace std;
@@ -19,6 +24,8 @@ using json= nlohmann::json_abi_v3_11_2::json;
 double maxTab(vector<double>);
 
 double minTab(vector<double>);
+
+//unsigned char * int_unsigned_char(int);
 
 int main()
 {
@@ -29,6 +36,7 @@ int main()
     const unsigned int hauteur= 800, largeur= 800;
     const long unsigned int couleur_fond= 0x00D0EAFF;
     const long unsigned int couleur_trace= 0x000000FF;
+    const long unsigned int couleur_echelle= 0x00808080;
 
     gdImagePtr im;
 
@@ -113,6 +121,27 @@ int main()
         //x1= x1 + larg_h + espace;
     }
 
+    /// \brief dessiner une échelle
+    int bas= (int)tempmin, ht= (int)(tempmax+1);
+    //int ecart= ( (ht-bas)%2==0 )
+    for(int t= bas; t< ht; t++)
+    {
+        //printf("\nsomme= %d, pas= %d\n", somme, pas);
+        double li= a * t + b;
+        gdImageLine(im, margel, li, largeur - margel, li, couleur_echelle);
+
+        string st= to_string(t);
+        char ch[st.size()+1];
+        unsigned char uch[st.size()+1];
+        int i;
+        for(i= 0; i < st.size(); i++)ch[i]= (char)(st[i]);
+        ch[i]= 0;
+        for(int i= 0; i < st.size(); i++)uch[i]= (unsigned char)(st[i]);
+        uch[i]= 0;
+
+        gdImageString(im, gdFontMediumBold, gdFontMediumBold->w , li - gdFontMediumBold->h/2 ,
+                      uch, 0x00000000);
+    }
 
 
 
