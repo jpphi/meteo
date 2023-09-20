@@ -18,10 +18,17 @@ if (CURL_FOUND)
 endif()
 
 
-find_package(jsoncpp REQUIRED)
+#find_package(jsoncpp REQUIRED)
 
-if (jsoncpp_FOUND)
-    include_directories(${jsoncpp_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${jsoncpp_LIBRARIES})
-endif()
+#if (jsoncpp_FOUND)
+#    include_directories(${jsoncpp_INCLUDE_DIRS})
+#    target_link_libraries(${PROJECT_NAME} ${jsoncpp_LIBRARIES})
+#endif()
+
+#find_package (GD REQUIRED)
+#if (GD_FOUND)
+#    include_directories(${GD_INCLUDE_DIRS})
+#    target_link_libraries(${PROJECT_NAME} ${GD_LIBRARIES})
+#endif()
+
 

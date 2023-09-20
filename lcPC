@@ -1,0 +1,2 @@
+#! /bin/sh
+g++ -o ginfosPC ginfos.cpp -lcurl -lgd -lstdc++fs
