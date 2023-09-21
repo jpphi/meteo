@@ -15,7 +15,7 @@ http://127.0.0.1:8080/index.html
 Dans le fichier /var/spool/cron/crontabs/jpm la ligne "* * * * * /bin/ginfos" permet de lancer le programme pour les graphiques toutes les minutes.  
 Le programme peut être lancé manuellement par la commande **ginfos**.  
   
-Pour lancer le daemon httpd:  
+Pour lancer le daemon (en root) httpd:  
 httpd -u jpm  
   
 Un fichier index.html a été crée et permet un affichage des graphiques produits depuis un navigateur.  
@@ -42,3 +42,7 @@ api.open-meteo.com/v1/forecast?latitude=43.5283&longitude=5.4497&hourly=temperat
 
 ### Autre ressource url pour la météo:  
 api.openweathermap.org/data/2.5/weather?lat=43.5283&lon=5.44973&appid=fb7ea3ac85bb67a9bdb0b4b9a51f1c72&units=metric  
+  
+## Bugs  
+Le fichier png generé depuis la carte ne semble pas correct et provoque l'erreur "cannot be displayed because it contents errors". Ce même fichier s'il est produit coté pc s'affiche sans problème.  
+
