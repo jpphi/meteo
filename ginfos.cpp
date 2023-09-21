@@ -121,12 +121,11 @@ int main()
         //x1= x1 + larg_h + espace;
     }
 
-    /// \brief dessiner une échelle
+    /// \brief dessiner une échelle et la graduer
     int bas= (int)tempmin, ht= (int)(tempmax+1);
     //int ecart= ( (ht-bas)%2==0 )
     for(int t= bas; t< ht; t++)
     {
-        //printf("\nsomme= %d, pas= %d\n", somme, pas);
         double li= a * t + b;
         gdImageLine(im, margel, li, largeur - margel, li, couleur_echelle);
 

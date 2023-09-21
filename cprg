@@ -1,2 +1,3 @@
 #! /bin/sh
 cp ginfos ~/Downloads/buildroot-2023.08/overlay/bin
+cp index.html ~/Downloads/buildroot-2023.08/overlay/home/jpm
