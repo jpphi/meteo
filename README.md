@@ -1,5 +1,33 @@
 # meteo  
   
+httpd -p 8080 -h /home/jpm  
+
+## Installation:  
+Buildroot:  
+-Decompacter buildroot  
+-lancer make xconfig dans le répertoire buildroot-2023.08  
+-Dans librairie/Graphics coché gd puis, fenêtre de gauche gdtopng et pngtogd  
+-Dans Toolchain cocher Enable C++ support  
+-Dans JSON/XML cocher json for modern c++ et libjson  
+-Dans Networking cocher libcurl  
+-Faire un make dans le répertoire buildroot-2023.08  
+Busybox:  
+-Faire un make menuconfig dans le répertoire buildroot-2023.08/output/build/busybox-1.36.1  
+-Dans menuconfig rechercher Networkink. Dans ce sous menu, cocher la case httpd  
+Buildroot: configuration pour application.  
+-Dans le repertoire buildroot-2023.08 créer les répertoire bin, usr, var, etc, home  
+-Dans le répertoire buildroot-2023.08/bin sera placé l'exécutable du projet meteo **ginfos**  
+-Dans le répertoire home, créer un répertoire utilisateur par exemple jpm  
+-C'est dans le répertoire jpm que sera placé **index.html**.  
+Configuration clavier:  
+- Le fichier S10Keyboard permet de generer le fichier azerty.kmap.  
+-Une fois le fichier kmap généré le placer dans overlay/etc.  
+-Placer S10Keyboard dans overlay/etc/init.d.  
+Configuration de crontabs:  
+- 
+-Revenir dans le repertoire buildroot-2023.08 et lancer la commande make  
+
+
 ## Commande coté PC  
 Commande pour récupérer le fichier index.html depuis le PC:  
 wget 127.0.0.1:8080/index.html  
