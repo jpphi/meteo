@@ -10,8 +10,13 @@
         - Dans Networking cocher libcurl  
         - Dans Target Option cocher Aarch64 little endian  
         - Sauvegarder
+    - Choix de la carte (Se placer dans le répertoire de buildroot):  
+        - Lancer la commande make list-defconfigs | grep aarch64  
+        - On choisira la carte "qemu_aarch64_virt_defconfig"  
+        - On lance la commande make qemu_aarch64_virt_defconfig
     - Faire un make dans le répertoire buildroot-2023.08  
-  
+        - Aller se boire 1 café ou 2, il y a largement le temps !  
+    
 - Busybox:  
     - Faire un make menuconfig dans le répertoire buildroot-2023.08/output/build/busybox-1.36.1  
     - Dans menuconfig rechercher Networkink. Dans ce sous menu, cocher la case httpd  
