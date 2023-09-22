@@ -1,36 +1,55 @@
 # meteo  
-  
-httpd -p 8080 -h /home/jpm  
 
 ## Installation:  
 - Buildroot:  
     - Decompacter buildroot  
     - lancer make xconfig dans le répertoire buildroot-2023.08  
-    - Dans librairie/Graphics coché gd puis, fenêtre de gauche gdtopng et pngtogd  
-    - Dans Toolchain cocher Enable C++ support  
-    - Dans JSON/XML cocher json for modern c++ et libjson  
-    - Dans Networking cocher libcurl  
+        - Dans librairie/Graphics coché gd puis, fenêtre de gauche gdtopng et pngtogd  
+        - Dans Toolchain cocher Enable C++ support  
+        - Dans JSON/XML cocher json for modern c++ et libjson  
+        - Dans Networking cocher libcurl  
+        - Dans Target Option cocher Aarch64 little endian  
+        - Sauvegarder
     - Faire un make dans le répertoire buildroot-2023.08  
+  
 - Busybox:  
     - Faire un make menuconfig dans le répertoire buildroot-2023.08/output/build/busybox-1.36.1  
     - Dans menuconfig rechercher Networkink. Dans ce sous menu, cocher la case httpd  
+  
 - Buildroot: configuration pour application.  
     - Dans le repertoire buildroot-2023.08 créer les répertoire bin, usr, var, etc, home  
     - Dans le répertoire buildroot-2023.08/bin sera placé l'exécutable du projet meteo **ginfos**  
     - Dans le répertoire home, créer un répertoire utilisateur par exemple jpm  
     - C'est dans le répertoire jpm que sera placé **index.html**.  
+  
 - Configuration clavier:  
     - Le fichier S10Keyboard permet de generer le fichier azerty.kmap.  
     - Une fois le fichier kmap généré le placer dans overlay/etc.  
     -Placer S10Keyboard dans overlay/etc/init.d.  
+  
 - Configuration de crontabs:  
     - Placer le fichier S80cron dans overlay/etc/init.d.  
     - Créer le fichier jpm (même nom que l'utilisateur) dans overlay/var/spool/cron/crontabs.  
     - Voir fichier jpm déja créer pour s'en inspirer.  
-    
-    
--Revenir dans le repertoire buildroot-2023.08 et lancer la commande make  
+  
+- Configuration de la zone horaire:  
+    - Copier le fichier /usr/share/zoneinfo/Europe/Paris dans overlay/usr/share/zoneinfo/Europe.  
+  
+- Préparer les fichiers pour la carte:  
+    - Lancer une compilation avec la commande ./lc (génération de l'exécutable ginfos).  
+    - Le fichier index.html doit être créé.  
+    - Lancer l'utilitaire cprg qui place les fichiers nécessaire dans le répertoire overlay.  
+  
+- Revenir dans le repertoire buildroot-2023.08 et lancer la commande make  
+  
+- Lancement de l'émulateur:  
+    - Dans le répertoire buildroot-2023.08/output/images se trouve le shell script go réaliser à partir de start-qemu.sh. C'est la commande exec qui a été modifiée.  
+    - Lancer go.sh.  
 
+  
+- Côté carte:  
+    - Lancer le daemon: httpd -p 8080 -h /home/jpm  
+  
 
 ## Commande coté PC  
 Commande pour récupérer le fichier index.html depuis le PC:  
